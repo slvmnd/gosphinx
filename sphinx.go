@@ -1095,10 +1095,14 @@ func (sc *SphinxClient) Open() (err error) {
 }
 
 func (sc *SphinxClient) Close() error {
-	if sc.conn != nil {
+	if sc.conn == nil {
 		return errors.New("Close -> not connected!\n")
 	}
-	sc.conn.Close()
+
+	if err := sc.conn.Close(); err != nil {
+		return err
+	}
+	
 	sc.conn = nil
 	return nil
 }
