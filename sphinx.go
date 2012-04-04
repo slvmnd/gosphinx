@@ -671,7 +671,7 @@ func (sc *SphinxClient) RunQueries() (results []SphinxResult, err error) {
 				case SPH_ATTR_FLOAT:
 					var f float32
 					buf := bytes.NewBuffer(response[p : p+4])
-					if err := binary.Read(buf, binary.BigEndian, f); err != nil {
+					if err := binary.Read(buf, binary.BigEndian, &f); err != nil {
 						return nil, err
 					}
 					match.AttrValues[attrNum] = f
