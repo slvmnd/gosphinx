@@ -445,6 +445,9 @@ func (sc *SphinxClient) SetGroupDistinct(groupDistinct string){
 func (sc *SphinxClient) Query(query, index, comment string) (result *SphinxResult, err error) {
 	if index == "" { index = "*" }
 	
+	// reset requests array
+	sc.reqs = nil
+
 	sc.AddQuery(query, index, comment)
 	results, err := sc.RunQueries()
 	if err != nil {
