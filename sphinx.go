@@ -8,6 +8,7 @@ import (
 	"io"
 	"net"
 	"strings"
+	"time"
 )
 
 /* searchd command versions */
@@ -1044,7 +1045,8 @@ func (sc *SphinxClient) connect() (conn net.Conn, err error) {
 		}
 	}
 	
-	if err = conn.SetTimeout(int64(sc.timeout)*1e6); err != nil {
+	deadTime := time.Now().Add(time.Duration(sc.timeout) * time.Millisecond)
+	if err = conn.SetDeadline(deadTime); err != nil {
 		sc.connerror = true
 		return nil, err
 	}
