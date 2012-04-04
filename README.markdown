@@ -6,11 +6,7 @@ A sphinx client package for the Go programming language.
 Installation
 ------------
 
-`git clone git://github.com/yunge/gosphinx.git`
-
-`cd gosphinx`
-
-`make install`
+`go get github.com/yunge/gosphinx`
 
 Testing
 -------
@@ -19,7 +15,7 @@ import "documents.sql" to "test" database in mysql, start sphinx searchd with "s
 
 Then "cd" to gosphinx,
 
-`make test`
+`go test .`
 
 Differs from other languages' lib
 -------------------------------
