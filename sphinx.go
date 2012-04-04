@@ -8,6 +8,7 @@ import (
 	"io"
 	"net"
 	"strings"
+	"time"
 )
 
 /* searchd command versions */
@@ -262,8 +263,12 @@ func (sc *SphinxClient) SetLimits(offset, limit, maxMatches, cutoff int) error {
 	
 	sc.offset = offset
 	sc.limit = limit
-	sc.maxMatches = maxMatches
-	sc.cutoff = cutoff
+	if maxMatches > 0 {
+		sc.maxMatches = maxMatches
+	}
+	if cutoff > 0 {
+		sc.cutoff = cutoff
+	}
 	return nil
 }
 
@@ -440,6 +445,9 @@ func (sc *SphinxClient) SetGroupDistinct(groupDistinct string){
 func (sc *SphinxClient) Query(query, index, comment string) (result *SphinxResult, err error) {
 	if index == "" { index = "*" }
 	
+	// reset requests array
+	sc.reqs = nil
+
 	sc.AddQuery(query, index, comment)
 	results, err := sc.RunQueries()
 	if err != nil {
@@ -663,7 +671,7 @@ func (sc *SphinxClient) RunQueries() (results []SphinxResult, err error) {
 				case SPH_ATTR_FLOAT:
 					var f float32
 					buf := bytes.NewBuffer(response[p : p+4])
-					if err := binary.Read(buf, binary.BigEndian, f); err != nil {
+					if err := binary.Read(buf, binary.BigEndian, &f); err != nil {
 						return nil, err
 					}
 					match.AttrValues[attrNum] = f
@@ -1044,7 +1052,8 @@ func (sc *SphinxClient) connect() (conn net.Conn, err error) {
 		}
 	}
 	
-	if err = conn.SetTimeout(int64(sc.timeout)*1e6); err != nil {
+	deadTime := time.Now().Add(time.Duration(sc.timeout) * time.Millisecond)
+	if err = conn.SetDeadline(deadTime); err != nil {
 		sc.connerror = true
 		return nil, err
 	}
@@ -1140,7 +1149,7 @@ func (sc *SphinxClient) doRequest(command int, version int, req []byte) (res []b
 	status := binary.BigEndian.Uint16(header[0:2])	
 	ver := binary.BigEndian.Uint16(header[2:4])
 	size := binary.BigEndian.Uint32(header[4:8])
-	if size <= 0 {
+	if size <= 0 || size > 10*1024*1024 {
 		return nil, fmt.Errorf("doRequest -> invalid response packet size (len=%d).\n", size)
 	}
 	
