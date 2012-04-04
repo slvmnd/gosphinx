@@ -2,15 +2,14 @@ About
 -----
 
 A sphinx client package for the Go programming language.
+Implemented by https://github.com/yunge
+
+A few bugfixes added by slvmnd
 
 Installation
 ------------
 
-`git clone git://github.com/yunge/gosphinx.git`
-
-`cd gosphinx`
-
-`make install`
+`go get github.com/slvmnd/goshpinx`
 
 Testing
 -------
