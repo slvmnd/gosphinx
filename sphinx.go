@@ -1149,7 +1149,7 @@ func (sc *SphinxClient) doRequest(command int, version int, req []byte) (res []b
 	status := binary.BigEndian.Uint16(header[0:2])	
 	ver := binary.BigEndian.Uint16(header[2:4])
 	size := binary.BigEndian.Uint32(header[4:8])
-	if size <= 0 {
+	if size <= 0 || size > 10*1024*1024 {
 		return nil, fmt.Errorf("doRequest -> invalid response packet size (len=%d).\n", size)
 	}
 	
