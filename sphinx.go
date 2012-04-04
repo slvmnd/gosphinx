@@ -263,8 +263,12 @@ func (sc *SphinxClient) SetLimits(offset, limit, maxMatches, cutoff int) error {
 	
 	sc.offset = offset
 	sc.limit = limit
-	sc.maxMatches = maxMatches
-	sc.cutoff = cutoff
+	if maxMatches > 0 {
+		sc.maxMatches = maxMatches
+	}
+	if cutoff > 0 {
+		sc.cutoff = cutoff
+	}
 	return nil
 }
 
