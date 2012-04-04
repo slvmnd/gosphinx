@@ -19,7 +19,8 @@ func TestInitSphinxClient(t *testing.T) {
     sc = NewSphinxClient()
     sc.SetServer(host, port)
     sc.Open()
-    defer sc.Close()
+    
+    sc.Close()
 }
 
 func TestStatus(t *testing.T) {

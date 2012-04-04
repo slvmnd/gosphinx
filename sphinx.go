@@ -917,8 +917,8 @@ func (sc *SphinxClient) UpdateAttributes(index string, attrs []string, values []
 }
 
 type Keyword struct {
-	Tokenized string
-	Normalized string
+	Tokenized string "Tokenized"
+	Normalized string "Normalized"
 	Docs int
 	Hits int
 }
