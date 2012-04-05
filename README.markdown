@@ -4,8 +4,6 @@ About
 A sphinx client package for the Go programming language.
 Implemented by https://github.com/yunge
 
-A few bugfixes added by slvmnd
-
 Installation
 ------------
 
@@ -18,7 +16,7 @@ import "documents.sql" to "test" database in mysql, start sphinx searchd with "s
 
 Then "cd" to gosphinx,
 
-`make test`
+`go test .`
 
 Differs from other languages' lib
 -------------------------------
