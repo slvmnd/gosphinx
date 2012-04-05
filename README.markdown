@@ -7,7 +7,7 @@ Implemented by https://github.com/yunge
 Installation
 ------------
 
-`go get github.com/slvmnd/goshpinx`
+`go get github.com/slvmnd/gosphinx`
 
 Testing
 -------
